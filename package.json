@@ -1,0 +1,17 @@
+{
+  "name": "face-api-demo",
+  "version": "1.0.0",
+  "description": "Module 3 Assignment on the edX Asynchronous Programming with Javascript course",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ./**/*.js"
+  },
+  "author": "Jason Browne <jaysunbee@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^4.13.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0"
+  }
+}
