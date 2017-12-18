@@ -45,6 +45,7 @@ function run(genFunc, param) {
 function populateTable(shipInfoPair) {
   const properties = [
     'name',
+    'model',
     'cost_in_credits',
     'max_atmosphering_speed',
     'cargo_capacity',
