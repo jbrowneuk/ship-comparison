@@ -5,87 +5,102 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Ship Comparison Tool</title>
     <link rel="stylesheet"
-          href="style.css">
-    <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
           integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
           crossorigin="anonymous">
     <link rel="stylesheet"
           href="https://use.fontawesome.com/releases/v5.0.1/css/all.css">
+    <link rel="stylesheet"
+          href="style.css">
   </head>
   <body>
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <header>
+      <nav class="navbar navbar-dark bg-dark">
+        <div class="container d-flex justify-content-between">
+          <a href="#" class="navbar-brand">Ship comparison tool</a>
+        </div>
+      </nav>
+    </header>
+
+    <main role="main">
+
+      <section class="jumbotron">
+        <div class="container" id="initial-load-area">
+          <h1 class="jumbotron-heading">Making the Kessel run in less than 12 parsecs</h1>
+          <p class="lead text-muted">A long time ago in a galaxy far, far away…</p>
+          <p class="text-muted">
+            <i class="fa fa-spinner fa-pulse"></i> Loading…
+          </p>
+        </div>
+
+        <div class="container" id="comparison-area">
+          <h1 class="jumbotron-heading">Compare ships</h1>
+          <p class="lead text-muted">Select two Starships from the dropdown lists to compare.</p>
+          <form id="comparison-form">
+            <fieldset id="comparison-fieldset" class="form-inline">
+              <div class="form-group mx-sm-3">
+                <select id="left-comparison" class="custom-select"></select>
+              </div>
+              <div class="form-group mx-sm-3">
+                <select id="right-comparison" class="custom-select"></select>
+              </div>
+              <div class="form-group mx-sm-3">
+                <button type="submit"
+                        id="compare-button"
+                        class="btn btn-secondary">
+                  Compare
+                </button>
+              </div>
+              <div id="load-animation">
+                <i class="fa fa-spinner fa-pulse"></i>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </section>
+
       <div class="container">
-        <span class="navbar-brand mb-0 h1">Star Wars ship comparison tool</span>
+        <table class="table has-top-margin force-column-widths">
+          <thead>
+            <tr>
+              <th></th>
+              <th id="table-name-left">Starship 1</th>
+              <th id="table-name-right">Starship 2</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Model</th>
+              <td id="table-model-left">-</td>
+              <td id="table-model-right">-</td>
+            </tr>
+            <tr>
+              <th scope="row">Cost</th>
+              <td id="table-cost_in_credits-left">-</td>
+              <td id="table-cost_in_credits-right">-</td>
+            </tr>
+            <tr>
+              <th scope="row">Speed</th>
+              <td id="table-max_atmosphering_speed-left">-</td>
+              <td id="table-max_atmosphering_speed-right">-</td>
+            </tr>
+            <tr>
+              <th scope="row">Cargo size</th>
+              <td id="table-cargo_capacity-left">-</td>
+              <td id="table-cargo_capacity-right">-</td>
+            </tr>
+            <tr>
+              <th scope="row">Passengers</th>
+              <td id="table-passengers-left">-</td>
+              <td id="table-passengers-right">-</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    </nav>
 
-    <div class="container" id="initial-load-area">
-      <h1>A long time ago in a galaxy far, far away…</h1>
-      <p>Hold up: the content is loading.</p>
-    </div>
+    </main>
 
-    <div class="container" id="comparison-area">
-      <h1>Select two Starships from the dropdown lists to compare</h1>
-      <form id="comparison-form">
-        <fieldset id="comparison-fieldset" class="form-inline">
-          <div class="form-group mx-sm-3">
-            <select id="left-comparison" class="custom-select"></select>
-          </div>
-          <div class="form-group mx-sm-3">
-            <select id="right-comparison" class="custom-select"></select>
-          </div>
-          <div class="form-group mx-sm-3">
-            <button type="submit"
-                    id="compare-button"
-                    class="btn btn-primary">
-              Compare
-            </button>
-          </div>
-          <div id="load-animation">
-            <i class="fa fa-spinner fa-pulse"></i>
-          </div>
-        </fieldset>
-      </form>
-
-      <table class="table has-top-margin">
-        <thead>
-          <tr>
-            <th></th>
-            <th>Starship 1</th>
-            <th>Starship 2</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">Name</th>
-            <td id="table-name-left"></td>
-            <td id="table-name-right"></td>
-          </tr>
-          <tr>
-            <th scope="row">Cost</th>
-            <td id="table-cost_in_credits-left"></td>
-            <td id="table-cost_in_credits-right"></td>
-          </tr>
-          <tr>
-            <th scope="row">Speed</th>
-            <td id="table-max_atmosphering_speed-left"></td>
-            <td id="table-max_atmosphering_speed-right"></td>
-          </tr>
-          <tr>
-            <th scope="row">Cargo size</th>
-            <td id="table-cargo_capacity-left"></td>
-            <td id="table-cargo_capacity-right"></td>
-          </tr>
-          <tr>
-            <th scope="row">Passengers</th>
-            <td id="table-passengers-left"></td>
-            <td id="table-passengers-right"></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
+    <!-- Main JavaScript for the application -->
     <script src="starshipComparison.js"></script>
   </body>
 </html>

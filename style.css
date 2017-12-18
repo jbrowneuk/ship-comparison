@@ -1,9 +1,18 @@
-body {
-  padding-top: 5rem;
+.jumbotron {
+  min-height: 320px;
+}
+
+.jumbotron-heading {
+  font-weight: 300;
 }
 
 .has-top-margin {
   margin-top: 4rem;
+}
+
+.force-column-widths th,
+.force-column-widths td {
+  width: 30%;
 }
 
 #comparison-area,
