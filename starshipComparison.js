@@ -1,20 +1,22 @@
 const API_ROOT = 'https://swapi.co/api';
 const REQUIRED_SHIP_IDS = [2, 75, 74, 65, 3, 59, 58, 63, 28, 29, 39, 10];
+const SHIP_PROPERTIES_FOR_COMPARISON = [
+  'name',
+  'model',
+  'cost_in_credits',
+  'max_atmosphering_speed',
+  'cargo_capacity',
+  'passengers',
+];
 
 let leftDropDown;
 let rightDropDown;
 let comparisonForm;
 let isLoadingComparison;
 
-function populateDropdown(dropdownElement, options) {
-  options.forEach((shipInfo) => {
-    const optionElement = document.createElement('option');
-    dropdownElement.appendChild(optionElement);
-    optionElement.value = shipInfo.id;
-    optionElement.innerHTML = shipInfo.name;
-  });
-}
-
+/**
+ * Starship generator function
+ */
 function* starshipGenerator(id) {
   const url = `${API_ROOT}/starships/${id}/`;
   const stream = yield fetch(url);
@@ -22,6 +24,9 @@ function* starshipGenerator(id) {
   return response;
 }
 
+/**
+ * Generator function wrapper
+ */
 function run(genFunc, param) {
   const genObject = genFunc(param);
 
@@ -42,16 +47,11 @@ function run(genFunc, param) {
   }
 }
 
+/**
+ * Convenience function to populate the table with data retrieved from the server
+ */
 function populateTable(shipInfoPair) {
-  const properties = [
-    'name',
-    'model',
-    'cost_in_credits',
-    'max_atmosphering_speed',
-    'cargo_capacity',
-    'passengers',
-  ];
-  properties.forEach((property) => {
+  SHIP_PROPERTIES_FOR_COMPARISON.forEach((property) => {
     const leftTableCell = document.getElementById(`table-${property}-left`);
     const rightTableCell = document.getElementById(`table-${property}-right`);
 
@@ -61,6 +61,7 @@ function populateTable(shipInfoPair) {
     leftTableCell.innerHTML = leftPropertyValue;
     rightTableCell.innerHTML = rightPropertyValue;
 
+    // Don't try to compare property values if they're not numeric
     if (isNaN(leftPropertyValue)) {
       return;
     }
@@ -68,18 +69,22 @@ function populateTable(shipInfoPair) {
     const valsEqual = leftPropertyValue === rightPropertyValue;
     const leftHasGreaterValue = +leftPropertyValue > +rightPropertyValue;
 
-    const getBackgroundColor = isGreater => (isGreater ? '#FF8080' : 'transparent');
+    const getBackgroundColor = isGreater => (isGreater ? '#FFAAAA' : 'transparent');
     leftTableCell.style.backgroundColor = getBackgroundColor(!valsEqual && leftHasGreaterValue);
     rightTableCell.style.backgroundColor = getBackgroundColor(!valsEqual && !leftHasGreaterValue);
   });
 }
 
+/**
+ * Function called to compare two selected star ships
+ */
 function compare() {
-  // Don't hit the server too much
+  // Don't hit the server too much - wait to complete if still going
   if (isLoadingComparison) {
     return;
   }
 
+  // Used to control the visibility and 'enabledness' of the UI elements
   const controlElements = (isLoading) => {
     const fieldset = document.getElementById('comparison-fieldset');
     const loadingAnimation = document.getElementById('load-animation');
@@ -99,12 +104,20 @@ function compare() {
     populateTable(shipInfoPair);
     isLoadingComparison = false;
     controlElements(isLoadingComparison);
+  }).catch((err) => {
+    alert('There was an issue getting data for the comparison. Please try again later.');
+    console.error(err);
+    isLoadingComparison = false;
+    controlElements(isLoadingComparison);
   });
 }
 
+/**
+ * Function called by the onchange event listener applied to the dropdowns
+ */
 function onSelectionChanged() {
   if (leftDropDown.selectedIndex === rightDropDown.selectedIndex) {
-    // Make them red
+    // Can't compare against self - mark as invalid
     rightDropDown.setCustomValidity('This is the same ship as selected on the left');
     return;
   }
@@ -115,17 +128,10 @@ function onSelectionChanged() {
   compare();
 }
 
-function setup() {
-  leftDropDown = document.getElementById('left-comparison');
-  rightDropDown = document.getElementById('right-comparison');
-  comparisonForm = document.getElementById('comparison-form');
-
-  comparisonForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    compare();
-    return false;
-  });
-
+/**
+ * Function used to get the initial ships and then populate the dropdowns
+ */
+function getInitialShipsAndPopulateDropdowns() {
   const shipDropdowns = [];
   const promises = [];
 
@@ -160,6 +166,36 @@ function setup() {
     document.getElementById('initial-load-area').style.display = 'none';
     document.getElementById('comparison-area').style.display = 'block';
   });
+}
+
+/**
+ * Convenience function to populate the drop down lists
+ */
+function populateDropdown(dropdownElement, options) {
+  options.forEach((shipInfo) => {
+    const optionElement = document.createElement('option');
+    dropdownElement.appendChild(optionElement);
+    optionElement.value = shipInfo.id;
+    optionElement.innerHTML = shipInfo.name;
+  });
+}
+
+/**
+ * Function called by the document's onload event listener to set up the page
+ */
+function setup() {
+  // Cache the elements to make it easier to reference them later
+  leftDropDown = document.getElementById('left-comparison');
+  rightDropDown = document.getElementById('right-comparison');
+  comparisonForm = document.getElementById('comparison-form');
+
+  comparisonForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    compare();
+    return false;
+  });
+
+  getInitialShipsAndPopulateDropdowns();
 }
 
 window.addEventListener('load', setup);
