@@ -129,6 +129,18 @@ function onSelectionChanged() {
 }
 
 /**
+ * Convenience function to populate the drop down lists
+ */
+function populateDropdown(dropdownElement, options) {
+  options.forEach((shipInfo) => {
+    const optionElement = document.createElement('option');
+    dropdownElement.appendChild(optionElement);
+    optionElement.value = shipInfo.id;
+    optionElement.innerHTML = shipInfo.name;
+  });
+}
+
+/**
  * Function used to get the initial ships and then populate the dropdowns
  */
 function getInitialShipsAndPopulateDropdowns() {
@@ -165,18 +177,6 @@ function getInitialShipsAndPopulateDropdowns() {
     // Hide loading message and show comparison area
     document.getElementById('initial-load-area').style.display = 'none';
     document.getElementById('comparison-area').style.display = 'block';
-  });
-}
-
-/**
- * Convenience function to populate the drop down lists
- */
-function populateDropdown(dropdownElement, options) {
-  options.forEach((shipInfo) => {
-    const optionElement = document.createElement('option');
-    dropdownElement.appendChild(optionElement);
-    optionElement.value = shipInfo.id;
-    optionElement.innerHTML = shipInfo.name;
   });
 }
 
