@@ -1,0 +1,13 @@
+body {
+  padding-top: 5rem;
+}
+
+.has-top-margin {
+  margin-top: 4rem;
+}
+
+#comparison-area,
+#load-animation {
+  /* These are displayed dynamically */
+  display: none;
+}
